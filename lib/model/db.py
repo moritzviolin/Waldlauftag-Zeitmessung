@@ -322,7 +322,7 @@ class Database:
 ║                                         ║
 ╚═════════════════════════════════════════╝
             """)
-            exit()
+            raise FileNotFoundError("Keine Datei " + file_name + " gefunden!")
 
     def read_runners_from_backup(self, file_name, run_id):
         # print("reading backup from " + file_name)
@@ -343,7 +343,10 @@ class Database:
 
     def write_infofile(self, file_name, delimiter=","):
         with Database(self.db_name) as cursor:
-            with open(file_name, 'w', newline='') as csvfile:
+            if not os.path.exists(file_name):
+                print("Keine Infodatei " + file_name + " gefunden. Wird erstellt...")
+                os.makedirs(os.path.dirname(file_name), exist_ok=True)
+            with open(file_name, "w", newline='') as csvfile:
                 writer = csv.writer(csvfile, delimiter=delimiter)
                 writer.writerow(['id', 'start', 'end'])
                 for row in cursor.execute("SELECT id, start, end FROM runs"):

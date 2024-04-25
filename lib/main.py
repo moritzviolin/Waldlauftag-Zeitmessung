@@ -33,8 +33,23 @@ def main():
     # rufe on_closing() auf, wenn das Fenster geschlossen wird
     root.after(settings.AUTOSAVE, save_data_periodically)
     root.protocol("WM_DELETE_WINDOW", on_closing)
-    root.mainloop()
+    try:
+        root.mainloop()
+    except Exception as err:
+        print(f"Fehler: {err}")
+        input("Press Enter to exit")
+    finally:
+        app.save_data(True)
+        data.write_data()
+        print("Programm speichert Daten.")
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as err:
+        print(f"Fehler: {err}")
+        input("Press Enter to exit")
+    finally:
+        print("Programm speichert Daten.")
+

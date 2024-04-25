@@ -48,6 +48,8 @@ class Settings:
     # nach dieser Zeit wird automatisch gespeichet (Millisekunden! 60000 = eine Minute
     AUTOSAVE = 60000
 
+    SAYNUMBERS = True
+
     # Infodatei mit Start- und Endzeit von jedem lauf
     INFOFILE = "ergebnisse/info.csv"
 
@@ -79,6 +81,7 @@ class Settings:
         if result:
             print(f"Die config-Datei {filename} wurde gefunden und erfolgreich gelesen.")
             self.AUTOSAVE = config.getint('main', 'autosave')
+            self.SAYNUMBERS = config.getboolean('main', 'say_numbers')
             self.INFOFILE = config.get('main', 'infofile')
             self.DATAFILE = config.get('main', 'datafile')
             self.SEP = config.get('main', 'sep')

@@ -4,6 +4,9 @@ import glob
 import datetime, time
 from datetime import datetime
 from utils import Logger
+from utils.say_numbers import say_number
+import threading
+
 
 from utils import utils
 # from lib.model.database import Database
@@ -16,6 +19,11 @@ class Data():
     timeformat = "%H:%M:%S"
     base_name = "waldlauf-" + str(datetime.today().year)
     db_name = os.path.join("data", base_name + ".db")
+    if not os.path.exists(db_name):
+        print("Datenbank " + db_name + " nicht gefunden. Datenbank wird erstellt...")
+        os.makedirs(os.path.dirname(db_name), exist_ok=True)
+    else:
+        print("Datenbank " + db_name + " gefunden.")
     folder_results = "ergebnisse"
 
     def __init__(self, settings):
@@ -75,6 +83,11 @@ class Data():
     def arrived(self, id):
         return_value = 0
         if self.is_running(id):
+            if self.settings.SAYNUMBERS:
+                try:
+                    threading.Thread(target=say_number, args=(str(id), )).start()
+                except Exception as err:
+                    print(f"Fehler: {err}")
             self.db.arrived(id)
             self.logger.log_runner_arrived(id)
             return_value = 1
@@ -209,6 +222,9 @@ class Data():
 
     def read_info(self):
         try:
+            if not os.path.exists(self.settings.INFOFILE):
+                print("Keine Infodatei " + self.settings.INFOFILE + " gefunden. Wird erstellt...")
+                os.makedirs(os.path.dirname(self.settings.INFOFILE), exist_ok=True)
             infofile = io.open(self.settings.INFOFILE, mode="r", encoding="utf-8")
             raw_data = infofile.read().rstrip()
             zeilen = raw_data.split("\n")

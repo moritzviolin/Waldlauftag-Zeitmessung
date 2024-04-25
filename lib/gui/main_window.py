@@ -235,8 +235,8 @@ class MainWindow(tk.Frame):
             # if self.data.db.run_is_active(run_id):
             panel['panel'].reset_lists()
             if len(self.data.db.get_all_runners_from_run(run_id)) == 0:
-                # timestamp = self.data.stop_run(run_id)
-                self.finish_run(run_id)
+                timestamp = self.data.stop_run(run_id)
+                # self.finish_run(run_id)
 
 
     # ==========================================================================
