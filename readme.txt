@@ -45,4 +45,4 @@ Die Uhrzeit im Dateinamen gibt immer die Startzeit des Laufs an.
 Getestet mit python 3.10.7 und 3.10.10
 Für Sprachausgabe folgendes im Terminal ausführen:
 pip install playsound==1.2.2
-
+=> Getestet auf Windows 10 mit Python 3.9.1
